@@ -1,0 +1,44 @@
+name: Build Cross-Platform Release
+
+on:
+  push:
+    branches: [ "main" ] # Pastikan ini sesuai dengan nama branch utamamu (main atau master)
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # --- JOB UNTUK WINDOWS (.exe) ---
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Build Release
+      run: cargo build --release
+
+    - name: Upload Windows Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: App-Windows-Exe
+        path: target/release/*.exe
+
+  # --- JOB UNTUK MACOS ---
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Build Release
+      run: cargo build --release
+
+    - name: Upload MacOS Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: App-MacOS-Binary
+        path: target/release/${{ github.event.repository.name }}
