@@ -1,0 +1,103 @@
+import {
+    VerticalBox,
+    HorizontalBox,
+    Button,
+    LineEdit,
+    ComboBox,
+    TextEdit,
+} from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    icon: @image-url("logo.png");
+
+    preferred-width: 600px;
+    preferred-height: 720px;
+    title: "Aplikasi Sortir File";
+
+    in-out property <string> src_folder;
+    in-out property <string> dst_folder;
+    in-out property <string> format_type : "JPG";
+    in-out property <string> filenames;
+
+    in property <int> success_count: 0;
+    in property <int> fail_count: 0;
+    in property <string> log;
+
+    callback browse_src();
+    callback browse_dst();
+    callback process_files();
+
+    VerticalBox {
+        spacing: 10px;
+        padding: 10px;
+
+        Text {
+            text: "Folder Asal";
+        }
+
+        HorizontalBox {
+            LineEdit {
+                text <=> root.src_folder;
+            }
+
+            Button {
+                text: "Browse";
+                clicked => {
+                    root.browse_src();
+                }
+            }
+        }
+
+        Text {
+            text: "Folder Tujuan";
+        }
+
+        HorizontalBox {
+            LineEdit {
+                text <=> root.dst_folder;
+            }
+
+            Button {
+                text: "Browse";
+                clicked => {
+                    root.browse_dst();
+                }
+            }
+        }
+
+        Text {
+            text: "Format File";
+        }
+
+        ComboBox {
+            model: ["JPG", "CR2", "NEF", "ARW", "RAF", "ORF", "RW2"];
+            current-value <=> root.format_type; 
+}
+
+        Text {
+            text: "Nama File (1 baris = 1 file)";
+        }
+
+        TextEdit {
+            height: 200px;
+            text <=> root.filenames;
+        }
+
+        Button {
+            text: "PROSES PINDAHKAN";
+            clicked => {
+                root.process_files();
+            }
+        }
+
+        Text {
+            text: "Sukses: " + root.success_count + " | Gagal: " + root.fail_count;
+        }
+        Rectangle {
+            background: black;
+            Text {
+                text: root.log;
+            }
+        }
+    }
+}
