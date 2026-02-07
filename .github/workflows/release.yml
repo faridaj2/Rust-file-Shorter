@@ -41,4 +41,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: App-MacOS-Binary
-        path: target/release/${{ github.event.repository.name }}
+        path: target/release/slint_gui
